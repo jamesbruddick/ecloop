@@ -43,7 +43,7 @@ INLINE void fe_print(const char *label, const fe a) {
 }
 
 INLINE bool fe_iszero(const fe r) { return r[0] == 0 && r[1] == 0 && r[2] == 0 && r[3] == 0; }
-INLINE void fe_clone(fe r, const fe a) { memcpy(r, a, sizeof(fe)); }
+INLINE void fe_clone(fe r, const fe a) { memmove(r, a, sizeof(fe)); }
 INLINE void fe_set64(fe r, const u64 a) {
   memset(r, 0, sizeof(fe));
   r[0] = a;
