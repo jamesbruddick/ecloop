@@ -19,7 +19,7 @@ A high-performance, CPU-optimized tool for computing public keys on the secp256k
 ## Build
 
 ```sh
-git clone https://github.com/vladkens/ecloop.git && cd ecloop
+git clone https://github.com/jamesbruddick/ecloop.git && cd ecloop
 make build
 ```
 

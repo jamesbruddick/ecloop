@@ -190,8 +190,7 @@ void ctx_write_found(ctx_t *ctx, const char *label, const h160_t hash, const fe 
   }
 
   if (ctx->outfile != NULL) {
-    fprintf(ctx->outfile, "%s\t%08x%08x%08x%08x%08x\t%016llx%016llx%016llx%016llx\n", //
-            label, hash[0], hash[1], hash[2], hash[3], hash[4],                       //
+    fprintf(ctx->outfile, "%016llx%016llx%016llx%016llx\n", //
             pk[3], pk[2], pk[1], pk[0]);
     fflush(ctx->outfile);
   }
