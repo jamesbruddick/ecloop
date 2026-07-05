@@ -25,3 +25,22 @@ jobs:
       - run: make build
       - run: ./ecloop -v
       - run: ./ecloop add -f data/btc-puzzles-hash -r 8000:ffff -q -o /dev/null
+
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up MinGW-w64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: mingw-w64-x86_64-gcc
+
+      - run: gcc -v
+      - run: gcc -O3 -ffast-math -march=native -Wall -Wextra -pthread main.c -o ecloop.exe -lpthread -lbcrypt
+      - run: ./ecloop.exe -v
+      - run: ./ecloop.exe add -f data/btc-puzzles-hash -r 8000:ffff -q -o /dev/null

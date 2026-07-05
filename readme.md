@@ -172,6 +172,34 @@ Should print output like this:
 
 _Note: This benchmark is run on a MacBook Pro M2._
 
+## Build on Windows (native, no WSL)
+
+`ecloop` builds on Windows with a MinGW-w64 toolchain — no Linux/WSL required.
+MSVC is _not_ supported because the code uses GCC/Clang extensions
+(`__uint128_t`, statement expressions, `__builtin_*`).
+
+1. Install a MinGW-w64 toolchain, e.g. via [MSYS2](https://www.msys2.org)
+   (`pacman -S mingw-w64-x86_64-gcc`) or [WinLibs](https://winlibs.com), and make
+   sure `gcc` is on your `PATH`.
+2. Clone the repo and build with the bundled script:
+
+   ```bat
+   git clone https://github.com/jamesbruddick/ecloop.git && cd ecloop
+   build.bat
+   ```
+
+   To use clang instead of gcc: `set CC=clang && build.bat`.
+
+Alternatively, build with CMake (works with the "MinGW Makefiles" or "Ninja"
+generators):
+
+```bat
+cmake -B build -G "MinGW Makefiles"
+cmake --build build
+```
+
+Either way you get `ecloop.exe`. Verify with `ecloop.exe -v`.
+
 ## Build on Windows with WSL
 
 Here are the steps I followed to run `ecloop` on Windows:

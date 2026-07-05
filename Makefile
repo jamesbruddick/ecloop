@@ -7,6 +7,14 @@ ifeq ($(shell uname -m),x86_64)
 	CC_FLAGS += -march=native -pthread -lpthread
 endif
 
+# On Windows (MSYS2/MinGW) link the CNG system RNG used in place of /dev/urandom.
+ifneq (,$(findstring MINGW,$(shell uname -s)))
+	CC_FLAGS += -lbcrypt
+endif
+ifneq (,$(findstring MSYS,$(shell uname -s)))
+	CC_FLAGS += -lbcrypt
+endif
+
 default: build
 
 clean:

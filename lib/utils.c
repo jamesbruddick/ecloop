@@ -18,6 +18,7 @@
 
 #ifdef _WIN32
   #include <windows.h>
+  #include <bcrypt.h>
 #else
   #include <fcntl.h>
   #include <termios.h>
@@ -71,6 +72,7 @@ char *strtrim(char *str) {
 
 // MARK: random helpers
 
+#ifndef _WIN32
 static FILE *_urandom = NULL;
 
 static void _close_urandom(void) {
@@ -79,8 +81,24 @@ static void _close_urandom(void) {
     _urandom = NULL;
   }
 }
+#endif
 
 u64 _prand64() { return (u64)rand() << 32 | (u64)rand(); }
+
+#ifdef _WIN32
+
+// Windows has no /dev/urandom; use the CNG system RNG instead.
+u64 _urand64() {
+  u64 r;
+  if (BCryptGenRandom(NULL, (PUCHAR)&r, sizeof(r), BCRYPT_USE_SYSTEM_PREFERRED_RNG) != 0) {
+    fprintf(stderr, "failed to read from system RNG\n");
+    exit(1);
+  }
+
+  return r;
+}
+
+#else
 
 u64 _urand64() {
   if (_urandom == NULL) {
@@ -101,6 +119,8 @@ u64 _urand64() {
 
   return r;
 }
+
+#endif
 
 INLINE u64 rand64(bool urandom) { return urandom ? _urand64() : _prand64(); }
 
